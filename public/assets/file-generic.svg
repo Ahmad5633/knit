@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g fill="currentColor">
+    <path d="M16 6 h26 l12 12 v40 a4 4 0 0 1 -4 4 h-34 a4 4 0 0 1 -4 -4 v-48 a4 4 0 0 1 4 -4 z" opacity="0.95"/>
+  </g>
+  <path d="M42 6 v10 a2 2 0 0 0 2 2 h10" fill="rgba(255,255,255,0.35)"/>
+  <g stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" fill="none">
+    <path d="M20 30 H44"/>
+    <path d="M20 38 H44"/>
+    <path d="M20 46 H38"/>
+  </g>
+</svg>

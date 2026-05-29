@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="boardG" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#2a2a2a"/>
+      <stop offset="1" stop-color="#0a0a0a"/>
+    </linearGradient>
+  </defs>
+  <!-- Body of clapperboard -->
+  <rect x="8" y="22" width="48" height="32" rx="3" fill="url(#boardG)"/>
+  <!-- Top hinged stripes plate -->
+  <path d="M8 22 L 56 14 L 56 22 Z" fill="#1a1a1a"/>
+  <g fill="#ffffff">
+    <path d="M8 22 L 16 22 L 18 14.8 L 10 15.8 Z"/>
+    <path d="M20 22 L 28 22 L 30 13.5 L 22 14.5 Z"/>
+    <path d="M32 22 L 40 22 L 42 12.2 L 34 13.2 Z"/>
+    <path d="M44 22 L 52 22 L 54 11 L 46 11.8 Z"/>
+  </g>
+  <!-- Hinge dots -->
+  <circle cx="10" cy="20" r="1" fill="#888"/>
+  <circle cx="54" cy="13" r="1" fill="#888"/>
+  <!-- Body lines -->
+  <g stroke="rgba(255,255,255,0.15)" stroke-width="0.6" fill="none">
+    <path d="M8 30 L 56 30"/>
+    <path d="M8 38 L 56 38"/>
+    <path d="M8 46 L 56 46"/>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="cbar1" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f4a4b6"/>
+      <stop offset="1" stop-color="#e8607a"/>
+    </linearGradient>
+    <linearGradient id="cbar2" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#a8c4e8"/>
+      <stop offset="1" stop-color="#5a82c8"/>
+    </linearGradient>
+    <linearGradient id="cbar3" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f9c5d0"/>
+      <stop offset="1" stop-color="#e87898"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect x="12" y="36" width="9" height="18" rx="1.8" fill="url(#cbar1)"/>
+    <rect x="27" y="26" width="9" height="28" rx="1.8" fill="url(#cbar2)"/>
+    <rect x="42" y="14" width="9" height="40" rx="1.8" fill="url(#cbar3)"/>
+  </g>
+  <!-- Trend line -->
+  <path d="M14 38 L 30 28 L 46 16"
+        stroke="#d44a68" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.6"/>
+  <g fill="#d44a68">
+    <circle cx="16.5" cy="36" r="1.8"/>
+    <circle cx="31.5" cy="26" r="1.8"/>
+    <circle cx="46.5" cy="14" r="1.8"/>
+  </g>
+</svg>

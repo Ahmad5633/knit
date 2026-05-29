@@ -2,26 +2,45 @@ import { cn } from "@/lib/cn";
 
 interface PebbleProps {
   className?: string;
-  variant?: 1 | 2 | 3 | 4;
+  variant?: 0 | 1 | 2 | 3 | 4 | 5;
   children?: React.ReactNode;
 }
 
-const PATHS = {
-  1: "M50 4 C72 4 96 16 96 44 C96 70 84 96 54 96 C28 96 6 80 6 52 C6 24 28 4 50 4 Z",
-  2: "M48 6 C76 2 94 22 96 50 C98 78 74 96 50 96 C24 96 4 78 6 46 C8 22 26 10 48 6 Z",
-  3: "M52 2 C78 6 98 24 94 54 C90 82 66 96 44 94 C20 92 4 70 8 44 C12 18 30 -2 52 2 Z",
-  4: "M44 4 C70 0 96 18 96 46 C96 74 80 98 50 96 C22 94 6 76 6 50 C6 26 22 8 44 4 Z",
-};
+// 0: rounded triangle (apex top, flat-ish bottom) — for feathers
+// 1: rounded oval / circle — for yarn
+// 2: squircle (rounded square) — for landscapes
+// 3: rounded triangle (lean variant) — for feathers
+// 4: rounded rectangle (squat squircle) — for landscapes
+// 5: pebble (irregular oval) — for yarn
+const PATHS = [
+  "M50 8 C58 8 64 14 76 34 C86 52 92 68 88 80 C84 92 68 96 50 96 C32 96 16 92 12 80 C8 68 14 52 24 34 C36 14 42 8 50 8 Z",
+  "M50 8 C74 8 92 26 92 50 C92 74 74 92 50 92 C26 92 8 74 8 50 C8 26 26 8 50 8 Z",
+  "M26 8 C16 8 8 16 8 26 L8 74 C8 84 16 92 26 92 L74 92 C84 92 92 84 92 74 L92 26 C92 16 84 8 74 8 Z",
+  "M54 8 C64 8 72 16 82 36 C90 52 94 68 86 80 C78 92 62 96 44 94 C26 92 10 84 10 70 C10 56 22 38 32 24 C40 14 46 8 54 8 Z",
+  "M22 20 C14 20 8 26 8 34 L8 66 C8 74 14 80 22 80 L78 80 C86 80 92 74 92 66 L92 34 C92 26 86 20 78 20 Z",
+  "M48 6 C72 4 92 22 94 48 C96 76 78 94 50 94 C22 94 6 74 8 46 C10 22 26 8 48 6 Z",
+];
 
-export function Pebble({ className, variant = 1, children }: PebbleProps) {
+export function Pebble({ className, variant = 0, children }: PebbleProps) {
   return (
     <div className={cn("relative", className)}>
       <svg
         viewBox="0 0 100 100"
-        className="absolute inset-0 h-full w-full drop-shadow-[0_2px_4px_rgba(80,70,90,0.18)]"
+        className="absolute inset-0 h-full w-full"
         aria-hidden
+        style={{
+          filter:
+            "drop-shadow(0 6px 10px rgba(60, 50, 70, 0.18)) drop-shadow(0 2px 3px rgba(60, 50, 70, 0.10))",
+        }}
       >
-        <path d={PATHS[variant]} fill="white" />
+        <defs>
+          <radialGradient id={`pebbleShine-${variant}`} cx="0.3" cy="0.25" r="0.75">
+            <stop offset="0" stopColor="#ffffff" />
+            <stop offset="0.65" stopColor="#f6efe3" />
+            <stop offset="1" stopColor="#ebd8c0" />
+          </radialGradient>
+        </defs>
+        <path d={PATHS[variant]} fill={`url(#pebbleShine-${variant})`} />
       </svg>
       <div className="relative flex h-full w-full items-center justify-center">
         {children}

@@ -2,17 +2,28 @@ import type { Item, Zone, ZoneId } from "./types";
 
 const mkId = (prefix: string, i: number) => `${prefix}-${i}`;
 
-const featherTints = ["#8b9eb7", "#d4a8c4", "#c47a8a", "#7a92a8", "#e8a89a"];
-const yarnTints = ["#7fc1c4", "#a8d49e", "#e88a9e", "#f0c860"];
-const landscapeTints = ["#e8a8a8", "#f5b574", "#8fa8c8"];
-const avatarTints = ["#3a3a3a", "#6b4a3a", "#a86b5a", "#d8a890"];
-const appTints = ["#5fb878", "#3aafd0", "#ffffff", "#7c3aed"];
+// Per-feather config: most use the standard feather, one is the multi-color variant.
+const featherConfigs: Array<{ asset: string; tint: string }> = [
+  { asset: "/assets/feather.svg", tint: "#7b6aa8" },
+  { asset: "/assets/feather.svg", tint: "#d8a8b8" },
+  { asset: "/assets/feather.svg", tint: "#c45a78" },
+  { asset: "/assets/feather-multi.svg", tint: "#5a82a8" },
+  { asset: "/assets/feather.svg", tint: "#e89c8a" },
+];
+const yarnTints = ["#5fb3b8", "#8fc878", "#e87898", "#f0c450"];
 
-const featherItems: Item[] = featherTints.map((tint, i) => ({
+// Three distinct landscape scenes in the bottom dock.
+const landscapeConfigs: Array<{ asset: string; tint?: string; badge?: number }> = [
+  { asset: "/assets/landscape-pink.svg" },
+  { asset: "/assets/landscape-sunset.svg" },
+  { asset: "/assets/landscape-blue.svg", badge: 2 },
+];
+
+const featherItems: Item[] = featherConfigs.map((cfg, i) => ({
   id: mkId("feather", i),
   kind: "feather",
-  asset: "/assets/feather.svg",
-  tint,
+  asset: cfg.asset,
+  tint: cfg.tint,
 }));
 
 const yarnItems: Item[] = yarnTints.map((tint, i) => ({
@@ -22,28 +33,27 @@ const yarnItems: Item[] = yarnTints.map((tint, i) => ({
   tint,
 }));
 
-const landscapeItems: Item[] = landscapeTints.map((tint, i) => ({
+const landscapeItems: Item[] = landscapeConfigs.map((cfg, i) => ({
   id: mkId("landscape", i),
   kind: "landscape",
-  asset: "/assets/landscape.svg",
-  tint,
-  badge: i === 2 ? 2 : undefined,
+  asset: cfg.asset,
+  tint: cfg.tint,
+  badge: cfg.badge,
 }));
 
 const setAsideItems: Item[] = [
-  { id: "set-feather", kind: "feather", asset: "/assets/feather.svg", tint: "#cfd8e3" },
-  { id: "set-yarn", kind: "yarn", asset: "/assets/yarn.svg", tint: "#7fc1c4" },
-  { id: "set-landscape", kind: "landscape", asset: "/assets/landscape.svg", tint: "#7fb89a" },
-  { id: "set-yarn-2", kind: "yarn", asset: "/assets/yarn.svg", tint: "#a06aa8" },
+  { id: "set-feather-1", kind: "feather", asset: "/assets/feather.svg", tint: "#cfd8e3" },
+  { id: "set-feather-2", kind: "feather", asset: "/assets/feather.svg", tint: "#f4f0ea" },
+  { id: "set-landscape", kind: "landscape", asset: "/assets/landscape-mountain.svg" },
+  { id: "set-yarn", kind: "yarn", asset: "/assets/yarn.svg", tint: "#a06aa8" },
 ];
 
-const avatarItems: Item[] = avatarTints.map((tint, i) => ({
-  id: mkId("avatar", i),
-  kind: "avatar",
-  asset: "/assets/avatar.svg",
-  tint,
-  label: ["Aiden", "Ben", "Carla", "Dani"][i],
-}));
+const avatarItems: Item[] = [
+  { id: "avatar-1", kind: "avatar", asset: "/assets/avatar-1.svg", label: "Aiden" },
+  { id: "avatar-2", kind: "avatar", asset: "/assets/avatar-2.svg", label: "Ben" },
+  { id: "avatar-3", kind: "avatar", asset: "/assets/avatar-3.svg", label: "Carla" },
+  { id: "avatar-4", kind: "avatar", asset: "/assets/avatar-4.svg", label: "Dani" },
+];
 
 const appItems: Item[] = [
   { id: "app-0", kind: "app", asset: "/assets/app-cat.svg", tint: "#9ad5b0", label: "Notes" },
@@ -55,8 +65,7 @@ const appItems: Item[] = [
 const userItem: Item = {
   id: "user-freddy",
   kind: "user",
-  asset: "/assets/avatar.svg",
-  tint: "#5b6b80",
+  asset: "/assets/avatar-user.svg",
   label: "Freddy Lam",
 };
 
@@ -90,12 +99,12 @@ export const seedZones: Record<ZoneId, Zone> = {
   },
   canvas: {
     id: "canvas",
-    accepts: ["feather", "yarn", "landscape", "avatar", "app"],
+    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file"],
     itemIds: [],
   },
   addContext: {
     id: "addContext",
-    accepts: ["feather", "yarn", "landscape", "avatar", "app"],
+    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file"],
     itemIds: [],
   },
   bottomPeople: {

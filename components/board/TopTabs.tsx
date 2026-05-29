@@ -8,14 +8,16 @@ const TABS = [
 
 export function TopTabs() {
   return (
-    <div className="flex items-center gap-12 font-handwritten text-2xl text-stone-700">
+    <div className="flex items-center gap-6 whitespace-nowrap font-handwritten text-[26px] leading-none text-stone-700 sm:gap-10">
       {TABS.map((tab) => (
         <button
           key={tab.label}
           type="button"
-          className="flex items-center gap-2 transition hover:text-stone-900"
+          className="group flex items-center gap-2 transition-colors hover:text-stone-900"
         >
-          <span>{tab.label}</span>
+          <span className="transition-transform group-hover:-translate-y-0.5">
+            {tab.label}
+          </span>
           {tab.count > 0 && <Badge value={tab.count} tone={tab.tone} />}
         </button>
       ))}

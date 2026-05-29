@@ -11,11 +11,11 @@ export function UserChip() {
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="font-handwritten text-xl text-stone-700">
-        {user.label?.split(" ")[1] ?? "Knit"}
+      <span className="font-handwritten text-[26px] leading-none text-stone-700">
+        Knit
       </span>
-      <ItemIcon item={user} size={56} />
-      <span className="text-xs text-stone-600">{user.label}</span>
+      <ItemIcon item={user} size={44} />
+      <span className="text-[11px] font-medium text-stone-600">{user.label}</span>
     </div>
   );
 }

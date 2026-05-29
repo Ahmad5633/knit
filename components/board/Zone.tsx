@@ -1,7 +1,7 @@
 "use client";
 
-import { Reorder } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { AnimatePresence } from "framer-motion";
 import { useBoard } from "@/lib/store";
 import { DraggableItem } from "./DraggableItem";
 import type { ZoneId } from "@/lib/types";
@@ -14,7 +14,6 @@ interface ZoneProps {
   itemSize?: number;
   showLabels?: boolean;
   emptyHint?: React.ReactNode;
-  as?: "div";
 }
 
 export function Zone({
@@ -27,7 +26,6 @@ export function Zone({
 }: ZoneProps) {
   const itemIds = useBoard((s) => s.zones[id].itemIds);
   const items = useBoard((s) => s.items);
-  const reorder = useBoard((s) => s.reorder);
   const registerRect = useBoard((s) => s.registerRect);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -48,31 +46,32 @@ export function Zone({
   }, [id, registerRect]);
 
   return (
-    <Reorder.Group
-      axis={axis}
-      values={itemIds}
-      onReorder={(next) => reorder(id, next as string[])}
+    <div
       ref={ref}
       className={cn(
         "flex",
-        axis === "x" ? "flex-row items-center gap-3" : "flex-col items-center gap-3",
+        axis === "x"
+          ? "flex-row items-center gap-3"
+          : "flex-col items-center gap-3",
         className,
       )}
     >
       {itemIds.length === 0 && emptyHint}
-      {itemIds.map((itemId) => {
-        const item = items[itemId];
-        if (!item) return null;
-        return (
-          <DraggableItem
-            key={itemId}
-            item={item}
-            zoneId={id}
-            size={itemSize}
-            showLabel={showLabels}
-          />
-        );
-      })}
-    </Reorder.Group>
+      <AnimatePresence initial={false}>
+        {itemIds.map((itemId) => {
+          const item = items[itemId];
+          if (!item) return null;
+          return (
+            <DraggableItem
+              key={itemId}
+              item={item}
+              zoneId={id}
+              size={itemSize}
+              showLabel={showLabels}
+            />
+          );
+        })}
+      </AnimatePresence>
+    </div>
   );
 }

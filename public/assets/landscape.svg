@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <defs>
+    <linearGradient id="lsky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbe0c8"/>
+      <stop offset="0.6" stop-color="#f4ad7a"/>
+      <stop offset="1" stop-color="#e08a6a"/>
+    </linearGradient>
+    <clipPath id="lround">
+      <rect width="80" height="80" rx="22"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#lround)">
+    <rect width="80" height="80" fill="url(#lsky)"/>
+    <!-- Sun -->
+    <circle cx="58" cy="22" r="8" fill="#ffe8c8" opacity="0.95"/>
+    <circle cx="58" cy="22" r="11" fill="#ffe8c8" opacity="0.25"/>
+
+    <!-- Background ridge -->
+    <path d="M0 46 L 14 36 L 26 44 L 38 34 L 52 42 L 66 32 L 80 40 L 80 80 L 0 80 Z"
+          fill="#d88a78" opacity="0.85"/>
+
+    <!-- Mid ridge -->
+    <path d="M0 56 L 18 38 L 32 52 L 46 40 L 60 54 L 80 46 L 80 80 L 0 80 Z"
+          fill="#c45a5e"/>
+
+    <!-- Front mountain -->
+    <path d="M0 66 L 16 46 L 30 60 L 44 48 L 60 64 L 80 56 L 80 80 L 0 80 Z"
+          fill="#7a3a3a"/>
+
+    <!-- Water/foreground -->
+    <path d="M0 72 L 80 70 L 80 80 L 0 80 Z" fill="#2a3a5a"/>
+    <path d="M10 76 L 30 75 L 50 76 L 70 75"
+          stroke="rgba(255,255,255,0.35)" stroke-width="0.7" fill="none"/>
+  </g>
+</svg>

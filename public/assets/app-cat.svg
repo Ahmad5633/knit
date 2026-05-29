@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="catBody" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#5a5a5a"/>
+      <stop offset="1" stop-color="#2a2a2a"/>
+    </radialGradient>
+  </defs>
+  <!-- Head (rounded) -->
+  <ellipse cx="32" cy="36" rx="20" ry="17" fill="url(#catBody)"/>
+  <!-- Ears -->
+  <path d="M14 24 L 18 14 L 27 22 Z" fill="#2a2a2a"/>
+  <path d="M50 24 L 46 14 L 37 22 Z" fill="#2a2a2a"/>
+  <!-- Inner ear pink -->
+  <path d="M17 20 L 19 16 L 23 21 Z" fill="#e8a8b8" opacity="0.7"/>
+  <path d="M47 20 L 45 16 L 41 21 Z" fill="#e8a8b8" opacity="0.7"/>
+  <!-- White eye mask (raccoon-style) -->
+  <ellipse cx="24" cy="34" rx="6" ry="5" fill="#ffffff"/>
+  <ellipse cx="40" cy="34" rx="6" ry="5" fill="#ffffff"/>
+  <!-- Pupils -->
+  <ellipse cx="24" cy="35" rx="2.2" ry="2.6" fill="#1a1a1a"/>
+  <ellipse cx="40" cy="35" rx="2.2" ry="2.6" fill="#1a1a1a"/>
+  <!-- Eye shine -->
+  <circle cx="25" cy="33.5" r="0.7" fill="#ffffff"/>
+  <circle cx="41" cy="33.5" r="0.7" fill="#ffffff"/>
+  <!-- Pink nose -->
+  <path d="M30 42 Q 32 44 34 42 Q 32 45 30 42 Z" fill="#e88aa0"/>
+  <!-- Mouth -->
+  <path d="M28 45 Q 32 47 36 45" stroke="#1a1a1a" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+  <!-- Whiskers -->
+  <g stroke="#ffffff" stroke-width="0.7" stroke-linecap="round" opacity="0.85">
+    <path d="M18 40 L 10 38"/>
+    <path d="M18 42 L 10 43"/>
+    <path d="M46 40 L 54 38"/>
+    <path d="M46 42 L 54 43"/>
+  </g>
+</svg>

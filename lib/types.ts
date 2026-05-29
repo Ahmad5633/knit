@@ -4,7 +4,8 @@ export type ItemKind =
   | "landscape"
   | "avatar"
   | "app"
-  | "user";
+  | "user"
+  | "file";
 
 export type ZoneId =
   | "setAside"
@@ -23,6 +24,9 @@ export interface Item {
   label?: string;
   badge?: number;
   tint?: string;
+  fileMime?: string;
+  fileSize?: number;
+  objectUrl?: string;
 }
 
 export interface Zone {

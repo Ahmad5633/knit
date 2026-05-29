@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #f5e9dc;
+  --color-foreground: #2a2422;
+  --font-sans: var(--font-sans);
+  --font-handwritten: var(--font-handwritten);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .font-handwritten {
+    font-family: var(--font-handwritten), "Caveat", "Kalam", cursive;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.board-bg {
+  background-color: #f1d5c4;
+  background-image:
+    url("/assets/landscape-bg.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

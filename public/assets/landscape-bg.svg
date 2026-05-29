@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" width="1600" height="900">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f6e2d1"/>
+      <stop offset="0.25" stop-color="#f1d6c2"/>
+      <stop offset="0.5" stop-color="#ebd1c4"/>
+      <stop offset="0.75" stop-color="#dbd2d4"/>
+      <stop offset="1" stop-color="#c6c4ce"/>
+    </linearGradient>
+
+    <linearGradient id="ridge1" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#e0d7d9" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#c8c0c6" stop-opacity="0.75"/>
+    </linearGradient>
+    <linearGradient id="ridge2" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ccc3c8" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#aaa4ae"/>
+    </linearGradient>
+    <linearGradient id="ridge3" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#b6b0b8"/>
+      <stop offset="1" stop-color="#8e8a96"/>
+    </linearGradient>
+    <linearGradient id="foreground" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#c0bcc6"/>
+      <stop offset="1" stop-color="#a4a0ac"/>
+    </linearGradient>
+
+    <filter id="paint" x="-4%" y="-4%" width="108%" height="108%">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+    <filter id="paintSoft" x="-4%" y="-4%" width="108%" height="108%">
+      <feGaussianBlur stdDeviation="3.6"/>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1600" height="900" fill="url(#sky)"/>
+
+  <!-- Soft haze band -->
+  <rect y="380" width="1600" height="220" fill="#ffffff" opacity="0.18"/>
+
+  <!-- Faintest distant ridge -->
+  <path d="M0 470
+           C 180 450, 320 460, 480 455
+           S 780 440, 940 450
+           S 1280 470, 1600 460
+           L 1600 900 L 0 900 Z"
+        fill="url(#ridge1)" opacity="0.5" filter="url(#paintSoft)"/>
+
+  <!-- Mid ridge -->
+  <path d="M0 540
+           C 200 510, 380 530, 580 520
+           S 900 500, 1100 520
+           S 1400 545, 1600 530
+           L 1600 900 L 0 900 Z"
+        fill="url(#ridge2)" opacity="0.6" filter="url(#paint)"/>
+
+  <!-- Bird silhouette -->
+  <g transform="translate(740 360)" fill="none" stroke="#48424f" stroke-width="2.2" stroke-linecap="round" opacity="0.65">
+    <path d="M-18 2 q 9 -12 18 0 q 9 -12 18 0"/>
+  </g>
+
+  <!-- Stronger middle ridge -->
+  <path d="M0 620
+           C 220 580, 460 610, 700 600
+           S 1020 580, 1240 605
+           S 1500 625, 1600 615
+           L 1600 900 L 0 900 Z"
+        fill="url(#ridge3)" opacity="0.75" filter="url(#paint)"/>
+
+  <!-- Tuscan village silhouette nestled on middle ridge -->
+  <g opacity="0.55" fill="#76707d">
+    <rect x="1020" y="590" width="6" height="32"/>
+    <rect x="1042" y="582" width="9" height="40"/>
+    <rect x="1066" y="576" width="12" height="46"/>
+    <path d="M1090 580 L1100 565 L1110 580 L1110 622 L1090 622 Z"/>
+    <rect x="1118" y="588" width="8" height="34"/>
+    <rect x="1138" y="585" width="6" height="37"/>
+    <path d="M1156 576 L1166 562 L1176 576 L1176 622 L1156 622 Z"/>
+    <rect x="1184" y="590" width="7" height="32"/>
+    <rect x="1200" y="594" width="6" height="28"/>
+    <!-- Cypress trees -->
+    <ellipse cx="1218" cy="600" rx="3" ry="18"/>
+    <ellipse cx="1232" cy="596" rx="3" ry="22"/>
+    <ellipse cx="1248" cy="598" rx="3" ry="20"/>
+  </g>
+
+  <!-- Front rolling hills -->
+  <path d="M0 720
+           C 260 680, 540 710, 800 700
+           S 1180 690, 1600 710
+           L 1600 900 L 0 900 Z"
+        fill="url(#foreground)" filter="url(#paint)"/>
+
+  <!-- Very front foreground hill -->
+  <path d="M0 820
+           C 240 790, 520 810, 800 800
+           S 1240 800, 1600 815
+           L 1600 900 L 0 900 Z"
+        fill="#9c98a4" opacity="0.85"/>
+
+  <!-- Subtle painterly cloud wisp -->
+  <ellipse cx="500" cy="180" rx="220" ry="14" fill="#ffffff" opacity="0.22"/>
+  <ellipse cx="900" cy="240" rx="180" ry="10" fill="#ffffff" opacity="0.18"/>
+</svg>
