@@ -2,14 +2,6 @@ import type { Item, Zone, ZoneId } from "./types";
 
 const mkId = (prefix: string, i: number) => `${prefix}-${i}`;
 
-// Per-feather config: most use the standard feather, one is the multi-color variant.
-const featherConfigs: Array<{ asset: string; tint: string }> = [
-  { asset: "/assets/feather.svg", tint: "#7b6aa8" },
-  { asset: "/assets/feather.svg", tint: "#d8a8b8" },
-  { asset: "/assets/feather.svg", tint: "#c45a78" },
-  { asset: "/assets/feather-multi.svg", tint: "#5a82a8" },
-  { asset: "/assets/feather.svg", tint: "#e89c8a" },
-];
 const yarnTints = ["#5fb3b8", "#8fc878", "#e87898", "#f0c450"];
 
 // Three distinct landscape scenes in the bottom dock.
@@ -18,13 +10,6 @@ const landscapeConfigs: Array<{ asset: string; tint?: string; badge?: number }> 
   { asset: "/assets/landscape-sunset.svg" },
   { asset: "/assets/landscape-blue.svg", badge: 2 },
 ];
-
-const featherItems: Item[] = featherConfigs.map((cfg, i) => ({
-  id: mkId("feather", i),
-  kind: "feather",
-  asset: cfg.asset,
-  tint: cfg.tint,
-}));
 
 const yarnItems: Item[] = yarnTints.map((tint, i) => ({
   id: mkId("yarn", i),
@@ -71,7 +56,6 @@ const userItem: Item = {
 
 export const seedItems: Record<string, Item> = Object.fromEntries(
   [
-    ...featherItems,
     ...yarnItems,
     ...landscapeItems,
     ...setAsideItems,
@@ -84,13 +68,13 @@ export const seedItems: Record<string, Item> = Object.fromEntries(
 export const seedZones: Record<ZoneId, Zone> = {
   setAside: {
     id: "setAside",
-    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file"],
+    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file", "document"],
     itemIds: setAsideItems.map((i) => i.id),
   },
   leftRailA: {
     id: "leftRailA",
-    accepts: ["feather"],
-    itemIds: featherItems.map((i) => i.id),
+    accepts: ["document"],
+    itemIds: [],
   },
   leftRailB: {
     id: "leftRailB",
@@ -99,12 +83,12 @@ export const seedZones: Record<ZoneId, Zone> = {
   },
   canvas: {
     id: "canvas",
-    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file"],
+    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file", "document"],
     itemIds: [],
   },
   addContext: {
     id: "addContext",
-    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file"],
+    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file", "document"],
     itemIds: [],
   },
   bottomPeople: {

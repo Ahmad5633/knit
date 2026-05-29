@@ -36,9 +36,16 @@ interface ColumnProps {
 
 function Column({ zoneId, kind, label, topOffset }: ColumnProps) {
   const spawn = useBoard((s) => s.spawnItem);
+  const openDocumentEditor = useBoard((s) => s.openDocumentEditor);
   return (
     <div className={`flex flex-col items-center gap-2 ${topOffset ?? ""}`}>
-      <AddButton onClick={() => spawn(zoneId, kind)} label={label} />
+      <AddButton
+        onClick={() => {
+          const id = spawn(zoneId, kind);
+          if (kind === "document" && id) openDocumentEditor(id);
+        }}
+        label={label}
+      />
       <Zone id={zoneId} axis="y" itemSize={56} className="!gap-2" />
     </div>
   );
@@ -47,7 +54,7 @@ function Column({ zoneId, kind, label, topOffset }: ColumnProps) {
 export function LeftRail() {
   return (
     <div className="flex items-start gap-4">
-      <Column zoneId="leftRailA" kind="feather" label="Add feather" />
+      <Column zoneId="leftRailA" kind="document" label="New document" />
       <Column zoneId="leftRailB" kind="yarn" label="Add yarn" topOffset="mt-14" />
     </div>
   );

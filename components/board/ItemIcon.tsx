@@ -41,8 +41,31 @@ export function ItemIcon({ item, size = 56, showLabel }: ItemIconProps) {
   const isAvatar = item.kind === "avatar" || item.kind === "user";
   const isFile = item.kind === "file";
   const isLandscape = item.kind === "landscape";
+  const isDocument = item.kind === "document";
   const tinted = TINTED_KINDS.has(item.kind);
   const inner = Math.round(size * 0.68);
+
+  if (isDocument) {
+    const displayTitle = item.title?.trim() || "Untitled";
+    return (
+      <Frame size={size} label={showLabel ? displayTitle : undefined} badge={item.badge}>
+        <div
+          className="flex h-full w-full items-center justify-center rounded-2xl bg-[#fbf6ec] shadow-[0_4px_10px_rgba(60,50,70,0.18)]"
+          title={displayTitle}
+        >
+          <svg viewBox="0 0 64 64" width={inner} height={inner} aria-hidden>
+            <rect x="10" y="6" width="44" height="52" rx="6" fill="#ffffff" stroke="rgba(120,100,80,0.18)" />
+            <rect x="16" y="14" width="32" height="3" rx="1.5" fill="#c8a87a" />
+            <rect x="16" y="24" width="28" height="2" rx="1" fill="rgba(120,100,80,0.32)" />
+            <rect x="16" y="30" width="32" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+            <rect x="16" y="36" width="24" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+            <rect x="16" y="42" width="30" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+            <rect x="16" y="48" width="20" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+          </svg>
+        </div>
+      </Frame>
+    );
+  }
 
   if (isLandscape) {
     return (
@@ -122,22 +145,26 @@ export function ItemIcon({ item, size = 56, showLabel }: ItemIconProps) {
     );
   }
 
+  if (isAvatar) {
+    return (
+      <Frame size={size} label={showLabel ? item.label : undefined} badge={item.badge}>
+        <div className="relative h-full w-full overflow-hidden rounded-full shadow-[0_4px_10px_rgba(60,50,70,0.18)]">
+          <Image
+            src={item.asset}
+            alt={item.label ?? "avatar"}
+            width={size}
+            height={size}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      </Frame>
+    );
+  }
+
   return (
     <Frame size={size} label={showLabel ? item.label : undefined} badge={item.badge}>
       <Pebble variant={variantFor(item)} className="h-full w-full">
-        {isAvatar ? (
-          <div
-            className="overflow-hidden rounded-full"
-            style={{ width: inner * 1.05, height: inner * 1.05 }}
-          >
-            <Image
-              src={item.asset}
-              alt={item.label ?? "avatar"}
-              width={Math.round(inner * 1.05)}
-              height={Math.round(inner * 1.05)}
-            />
-          </div>
-        ) : tinted ? (
+        {tinted ? (
           <TintedSvg src={item.asset} size={inner} color={item.tint} />
         ) : (
           <Image

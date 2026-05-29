@@ -8,13 +8,23 @@ import { AddContext } from "./AddContext";
 import { BottomDock } from "./BottomDock";
 import { Canvas } from "./Canvas";
 import { FilePreviewModal } from "./FilePreviewModal";
+import { DocumentEditorModal } from "./DocumentEditorModal";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 export function Board() {
   return (
     <ErrorBoundary>
       <FilePreviewModal />
+      <DocumentEditorModal />
       <div className="board-bg relative min-h-screen w-full overflow-hidden">
+        {/* Full-board invisible drop layer. Sits at the back so any drop that
+            doesn't land on a more specific zone (tray, rails, dock, addContext)
+            falls through to the canvas. */}
+        <div
+          data-zone-id="canvas"
+          aria-hidden
+          className="absolute inset-0"
+        />
         {/* Desktop layout (lg and up): absolute-positioned canvas matching reference */}
         <div className="hidden lg:block">
           <div className="absolute inset-x-[260px] top-[180px] bottom-[140px] xl:inset-x-[300px]">
@@ -49,7 +59,7 @@ export function Board() {
         {/* Tablet / mobile layout: stacked flow */}
         <div className="flex min-h-screen flex-col gap-6 px-4 py-6 lg:hidden sm:px-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="w-full max-w-[260px] flex-shrink-0">
+            <div className="flex-shrink-0">
               <SetAsideTray />
             </div>
             <div className="flex-shrink-0">

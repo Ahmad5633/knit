@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useBoard } from "@/lib/store";
 import { DraggableItem } from "./DraggableItem";
@@ -8,28 +7,10 @@ import { DraggableItem } from "./DraggableItem";
 export function SetAsideTray() {
   const itemIds = useBoard((s) => s.zones.setAside.itemIds);
   const items = useBoard((s) => s.items);
-  const registerRect = useBoard((s) => s.registerRect);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const publish = () => registerRect("setAside", el.getBoundingClientRect());
-    publish();
-    const ro = new ResizeObserver(publish);
-    ro.observe(el);
-    window.addEventListener("scroll", publish, true);
-    window.addEventListener("resize", publish);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("scroll", publish, true);
-      window.removeEventListener("resize", publish);
-    };
-  }, [registerRect]);
 
   return (
     <div className="relative" style={{ width: 320 }}>
-      <div ref={ref} className="relative" style={{ width: 320, minHeight: 240 }}>
+      <div data-zone-id="setAside" className="relative" style={{ width: 320, minHeight: 240 }}>
         <svg
           viewBox="0 0 320 240"
           className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"

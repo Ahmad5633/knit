@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { cn } from "@/lib/cn";
 
 interface PebbleProps {
@@ -22,6 +23,12 @@ const PATHS = [
 ];
 
 export function Pebble({ className, variant = 0, children }: PebbleProps) {
+  // useId guarantees a unique gradient id per Pebble instance. Using a static
+  // id (`pebbleShine-${variant}`) caused every same-variant pebble on the page
+  // to share one global id — when one unmounted, the others' `url(#…)` refs
+  // broke and their paths rendered transparent/invisible.
+  const reactId = useId();
+  const gradId = `pebbleShine-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
   return (
     <div className={cn("relative", className)}>
       <svg
@@ -30,17 +37,17 @@ export function Pebble({ className, variant = 0, children }: PebbleProps) {
         aria-hidden
         style={{
           filter:
-            "drop-shadow(0 6px 10px rgba(60, 50, 70, 0.18)) drop-shadow(0 2px 3px rgba(60, 50, 70, 0.10))",
+            "drop-shadow(0 6px 12px rgba(60, 50, 70, 0.22)) drop-shadow(0 2px 3px rgba(60, 50, 70, 0.14))",
         }}
       >
         <defs>
-          <radialGradient id={`pebbleShine-${variant}`} cx="0.3" cy="0.25" r="0.75">
+          <radialGradient id={gradId} cx="0.3" cy="0.25" r="0.75">
             <stop offset="0" stopColor="#ffffff" />
-            <stop offset="0.65" stopColor="#f6efe3" />
-            <stop offset="1" stopColor="#ebd8c0" />
+            <stop offset="0.7" stopColor="#fbf6f0" />
+            <stop offset="1" stopColor="#f0e6d4" />
           </radialGradient>
         </defs>
-        <path d={PATHS[variant]} fill={`url(#pebbleShine-${variant})`} />
+        <path d={PATHS[variant]} fill={`url(#${gradId})`} />
       </svg>
       <div className="relative flex h-full w-full items-center justify-center">
         {children}

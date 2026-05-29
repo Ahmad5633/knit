@@ -26,3 +26,155 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* ============ Document editor ============ */
+.doc-editor {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #292524;
+}
+.doc-editor:focus { outline: none; }
+
+.doc-editor p { margin: 0.45em 0; }
+.doc-editor h1 {
+  font-size: 1.85em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0.9em 0 0.35em;
+  color: #1c1917;
+}
+.doc-editor h2 {
+  font-size: 1.45em;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin: 0.8em 0 0.3em;
+  color: #1c1917;
+}
+.doc-editor h3 {
+  font-size: 1.18em;
+  font-weight: 600;
+  margin: 0.7em 0 0.25em;
+  color: #1c1917;
+}
+.doc-editor ul, .doc-editor ol {
+  padding-left: 1.5em;
+  margin: 0.45em 0;
+}
+.doc-editor ul { list-style: disc; }
+.doc-editor ol { list-style: decimal; }
+.doc-editor li { margin: 0.2em 0; }
+.doc-editor li > p { margin: 0; }
+
+.doc-editor ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.15em;
+}
+.doc-editor ul[data-type="taskList"] li {
+  display: flex;
+  gap: 0.55em;
+  align-items: flex-start;
+  margin: 0.2em 0;
+}
+.doc-editor ul[data-type="taskList"] li > label {
+  flex-shrink: 0;
+  margin-top: 0.32em;
+  user-select: none;
+}
+.doc-editor ul[data-type="taskList"] li > label input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #7c3aed;
+  cursor: pointer;
+}
+.doc-editor ul[data-type="taskList"] li > div { flex: 1 1 auto; min-width: 0; }
+.doc-editor ul[data-type="taskList"] li[data-checked="true"] > div { color: #a8a29e; text-decoration: line-through; }
+
+.doc-editor blockquote {
+  border-left: 3px solid #d6d3d1;
+  padding-left: 1em;
+  margin: 0.7em 0;
+  color: #57534e;
+  font-style: italic;
+}
+
+.doc-editor code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  background: #f5f5f4;
+  border: 1px solid #e7e5e4;
+  border-radius: 4px;
+  padding: 0.08em 0.35em;
+}
+.doc-editor pre {
+  background: #1c1917;
+  color: #fafaf9;
+  border-radius: 8px;
+  padding: 0.9em 1em;
+  margin: 0.8em 0;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  line-height: 1.55;
+}
+.doc-editor pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.doc-editor hr {
+  border: 0;
+  border-top: 1px solid #e7e5e4;
+  margin: 1.2em 0;
+}
+
+.doc-editor a, .doc-editor .doc-link {
+  color: #7c3aed;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.doc-editor a:hover { color: #6d28d9; }
+
+.doc-editor img, .doc-editor .doc-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 0.6em 0;
+  display: block;
+}
+
+.doc-editor table, .doc-editor .doc-table {
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  width: 100%;
+  table-layout: fixed;
+  overflow: hidden;
+}
+.doc-editor th, .doc-editor td {
+  border: 1px solid #e7e5e4;
+  padding: 0.45em 0.7em;
+  vertical-align: top;
+  position: relative;
+}
+.doc-editor th {
+  background: #fafaf9;
+  font-weight: 600;
+  text-align: left;
+}
+.doc-editor .selectedCell {
+  background: rgba(124, 58, 237, 0.08);
+}
+
+/* Placeholder */
+.doc-editor p.is-editor-empty:first-child::before,
+.doc-editor h1.is-empty::before,
+.doc-editor h2.is-empty::before,
+.doc-editor h3.is-empty::before {
+  color: #a8a29e;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

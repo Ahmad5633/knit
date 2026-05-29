@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useBoard } from "@/lib/store";
 import { DraggableItem } from "./DraggableItem";
@@ -10,26 +10,8 @@ import { cn } from "@/lib/cn";
 export function AddContext() {
   const itemIds = useBoard((s) => s.zones.addContext.itemIds);
   const items = useBoard((s) => s.items);
-  const registerRect = useBoard((s) => s.registerRect);
-  const groupRef = useRef<HTMLDivElement | null>(null);
   const dropRef = useRef<HTMLDivElement | null>(null);
   const { isOver } = useFileDrop(dropRef, "addContext");
-
-  useEffect(() => {
-    const el = groupRef.current;
-    if (!el) return;
-    const publish = () => registerRect("addContext", el.getBoundingClientRect());
-    publish();
-    const ro = new ResizeObserver(publish);
-    ro.observe(el);
-    window.addEventListener("scroll", publish, true);
-    window.addEventListener("resize", publish);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("scroll", publish, true);
-      window.removeEventListener("resize", publish);
-    };
-  }, [registerRect]);
 
   return (
     <div ref={dropRef} className="flex flex-col items-end gap-3">
@@ -37,7 +19,7 @@ export function AddContext() {
         add context...
       </div>
       <div
-        ref={groupRef}
+        data-zone-id="addContext"
         className={cn(
           "flex min-h-[80px] min-w-[140px] flex-col items-end gap-2 rounded-2xl p-2 transition-colors",
           isOver && "bg-white/40 ring-2 ring-violet-300/60",

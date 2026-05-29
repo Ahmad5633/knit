@@ -5,7 +5,8 @@ export type ItemKind =
   | "avatar"
   | "app"
   | "user"
-  | "file";
+  | "file"
+  | "document";
 
 export type ZoneId =
   | "setAside"
@@ -27,6 +28,9 @@ export interface Item {
   fileMime?: string;
   fileSize?: number;
   objectUrl?: string;
+  title?: string;
+  content?: string;
+  updatedAt?: number;
 }
 
 export interface Zone {

@@ -1,5 +1,5 @@
-import { Board } from "@/components/board/Board";
+import { BoardClient } from "@/components/board/BoardClient";
 
 export default function Home() {
-  return <Board />;
+  return <BoardClient />;
 }

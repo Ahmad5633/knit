@@ -1,0 +1,15 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="docPaper" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#faf3e6" />
+    </linearGradient>
+  </defs>
+  <rect x="10" y="6" width="44" height="52" rx="6" fill="url(#docPaper)" stroke="rgba(120,100,80,0.18)" />
+  <rect x="16" y="14" width="32" height="3" rx="1.5" fill="#c8a87a" />
+  <rect x="16" y="24" width="28" height="2" rx="1" fill="rgba(120,100,80,0.32)" />
+  <rect x="16" y="30" width="32" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+  <rect x="16" y="36" width="24" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+  <rect x="16" y="42" width="30" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+  <rect x="16" y="48" width="20" height="2" rx="1" fill="rgba(120,100,80,0.24)" />
+</svg>

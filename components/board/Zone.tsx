@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useBoard } from "@/lib/store";
 import { DraggableItem } from "./DraggableItem";
@@ -26,28 +25,10 @@ export function Zone({
 }: ZoneProps) {
   const itemIds = useBoard((s) => s.zones[id].itemIds);
   const items = useBoard((s) => s.items);
-  const registerRect = useBoard((s) => s.registerRect);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const publish = () => registerRect(id, el.getBoundingClientRect());
-    publish();
-    const ro = new ResizeObserver(publish);
-    ro.observe(el);
-    window.addEventListener("scroll", publish, true);
-    window.addEventListener("resize", publish);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("scroll", publish, true);
-      window.removeEventListener("resize", publish);
-    };
-  }, [id, registerRect]);
 
   return (
     <div
-      ref={ref}
+      data-zone-id={id}
       className={cn(
         "flex",
         axis === "x"
