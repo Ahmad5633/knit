@@ -1,11 +1,8 @@
 import type { ZoneId } from "./types";
+import type { ViewportPoint } from "./drag-utils";
 
-export interface Point {
-  x: number;
-  y: number;
-}
-
-const VALID_ZONE_IDS = new Set<ZoneId>([
+/** All zones whose containers carry a `data-zone-id` attribute. */
+const VALID_ZONE_IDS: ReadonlySet<ZoneId> = new Set<ZoneId>([
   "setAside",
   "leftRailA",
   "leftRailB",
@@ -16,40 +13,56 @@ const VALID_ZONE_IDS = new Set<ZoneId>([
   "topRight",
 ]);
 
-// Find the zone under a viewport-space point by querying the live DOM.
-// Each zone container marks itself with data-zone-id. We use elementsFromPoint
-// (returns all elements stacking at that point) and pick the deepest one whose
-// data-zone-id matches a known zone, excluding the source zone.
-//
-// This avoids the brittle rect-caching dance: no useEffect timing races, no
-// stale rects after layout shifts, no production-vs-dev divergence. The DOM
-// is queried fresh at drop time, so what the user sees is what they hit.
+function getZoneId(el: Element): ZoneId | null {
+  const value = (el as HTMLElement).dataset?.zoneId;
+  if (!value) return null;
+  return VALID_ZONE_IDS.has(value as ZoneId) ? (value as ZoneId) : null;
+}
+
+/** Walk up from an element until a `data-zone-id` carrier is found. */
+function nearestZoneAncestor(start: Element): Element | null {
+  let cur: Element | null = start;
+  while (cur) {
+    if (getZoneId(cur)) return cur;
+    cur = cur.parentElement;
+  }
+  return null;
+}
+
+/**
+ * Find the zone under a viewport-space point by querying the live DOM.
+ *
+ * Each zone container carries `data-zone-id="…"`. We use `elementsFromPoint`
+ * to get the full stack at the point, walk up from each element to its zone
+ * ancestor, and pick the smallest matching zone (smallest area = most
+ * specific target). The source zone is excluded so dropping back where you
+ * started is a no-op.
+ *
+ * Querying the live DOM avoids the brittle rect-cache approach: no
+ * `useEffect` timing races, no stale rects after layout shifts, no
+ * production-vs-dev divergence. What the user sees is what they hit.
+ */
 export function findZoneAtPoint(
-  point: Point,
+  point: ViewportPoint,
   exclude?: ZoneId,
 ): ZoneId | null {
   if (typeof document === "undefined") return null;
   const stack = document.elementsFromPoint(point.x, point.y);
 
-  // Track the smallest matching zone — when multiple zones overlap at the
-  // point, the one with the smallest area is the more specific target.
   let bestId: ZoneId | null = null;
   let bestArea = Infinity;
 
   for (const el of stack) {
-    let cur: Element | null = el;
-    while (cur) {
-      const zoneId = (cur as HTMLElement).dataset?.zoneId as ZoneId | undefined;
-      if (zoneId && VALID_ZONE_IDS.has(zoneId) && zoneId !== exclude) {
-        const rect = cur.getBoundingClientRect();
-        const area = rect.width * rect.height;
-        if (area > 0 && area < bestArea) {
-          bestArea = area;
-          bestId = zoneId;
-        }
-        break;
-      }
-      cur = cur.parentElement;
+    const zoneEl = nearestZoneAncestor(el);
+    if (!zoneEl) continue;
+    const zoneId = getZoneId(zoneEl);
+    if (!zoneId || zoneId === exclude) continue;
+
+    const rect = zoneEl.getBoundingClientRect();
+    const area = rect.width * rect.height;
+    if (area > 0 && area < bestArea) {
+      bestArea = area;
+      bestId = zoneId;
     }
   }
 

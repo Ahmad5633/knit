@@ -57,35 +57,41 @@ export function Board() {
         </div>
 
         {/* Tablet / mobile layout: stacked flow */}
-        <div className="flex min-h-screen flex-col gap-6 px-4 py-6 lg:hidden sm:px-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="flex-shrink-0">
-              <SetAsideTray />
-            </div>
-            <div className="flex-shrink-0">
-              <UserChip />
-            </div>
-          </div>
+        <div className="flex min-h-screen flex-col gap-5 px-4 py-5 lg:hidden sm:gap-6 sm:px-6 sm:py-6">
+          {/* Top bar: brand on the right, tabs scroll horizontally below */}
+          <header className="flex items-center justify-end">
+            <UserChip />
+          </header>
 
-          <div className="flex justify-center overflow-x-auto">
+          <nav
+            aria-label="Board sections"
+            className="-mx-4 flex justify-start overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:px-6"
+          >
             <TopTabs />
-          </div>
+          </nav>
 
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <div className="flex-shrink-0">
+          {/* Primary work area */}
+          <section className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
+            <div className="order-2 flex-shrink-0 sm:order-1">
               <LeftRail />
             </div>
-            <div className="min-h-[200px] flex-1 rounded-3xl bg-white/15 backdrop-blur-sm">
+            <div className="order-1 min-h-[220px] flex-1 rounded-3xl bg-white/20 shadow-[0_2px_12px_rgba(60,40,30,0.06)] ring-1 ring-white/30 backdrop-blur-sm sm:order-2 sm:min-h-[280px]">
               <Canvas />
             </div>
-            <div className="flex-shrink-0 sm:w-[180px]">
+            <div className="order-3 flex-shrink-0 sm:w-[180px]">
               <AddContext />
             </div>
-          </div>
+          </section>
 
-          <div className="mt-auto">
+          {/* Set aside tray — given its own row so it can breathe */}
+          <section className="flex justify-center sm:justify-start">
+            <SetAsideTray />
+          </section>
+
+          {/* Bottom dock */}
+          <footer className="mt-auto pt-2">
             <BottomDock />
-          </div>
+          </footer>
         </div>
       </div>
     </ErrorBoundary>

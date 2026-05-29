@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Caveat } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,12 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: "Knit Board",
   description: "A drag-and-drop context board",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

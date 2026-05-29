@@ -29,6 +29,7 @@ import type { SuggestionProps, SuggestionKeyDownProps } from "@tiptap/suggestion
 import { useBoard } from "@/lib/store";
 import { SlashCommand, type SlashCommandItem } from "./editor/SlashCommand";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { Tooltip } from "./Tooltip";
 
 const AUTOSAVE_DELAY_MS = 800;
 
@@ -332,35 +333,44 @@ function Header({
         aria-label="Document title"
       />
       <SaveStatusIndicator status={status} lastSavedAt={lastSavedAt} />
-      <button
-        type="button"
-        onClick={onSave}
-        disabled={status === "saved"}
-        className="rounded-md bg-violet-600 px-4 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-violet-700 disabled:cursor-default disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none"
+      <Tooltip
+        label={status === "saved" ? "All changes saved" : "Save document"}
+        hint="Ctrl+S"
+        side="bottom"
       >
-        {status === "saving" ? "Saving…" : "Save"}
-      </button>
-      <button
-        type="button"
-        onClick={onDelete}
-        aria-label="Delete document"
-        title="Delete document"
-        className="flex h-8 w-8 items-center justify-center rounded-md text-stone-500 transition hover:bg-rose-50 hover:text-rose-600"
-      >
-        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Close editor"
-        className="flex h-8 w-8 items-center justify-center rounded-md text-stone-500 transition hover:bg-stone-100 hover:text-stone-800"
-      >
-        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
-        </svg>
-      </button>
+        <button
+          type="button"
+          onClick={onSave}
+          disabled={status === "saved"}
+          className="rounded-md bg-violet-600 px-4 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-violet-700 disabled:cursor-default disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60"
+        >
+          {status === "saving" ? "Saving…" : "Save"}
+        </button>
+      </Tooltip>
+      <Tooltip label="Delete document" hint="Cannot be undone" side="bottom">
+        <button
+          type="button"
+          onClick={onDelete}
+          aria-label="Delete document"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-stone-500 transition hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/60"
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </Tooltip>
+      <Tooltip label="Close" hint="Esc" side="bottom">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close editor"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-stone-500 transition hover:bg-stone-100 hover:text-stone-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60"
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+          </svg>
+        </button>
+      </Tooltip>
     </header>
   );
 }
@@ -689,24 +699,33 @@ interface ToolButtonProps {
 }
 
 function ToolButton({ active, onClick, label, disabled, children }: ToolButtonProps) {
+  const { primary, hint } = splitShortcut(label);
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      aria-pressed={active}
-      title={label}
-      disabled={disabled}
-      className={
-        "flex h-8 min-w-8 items-center justify-center rounded-md px-2 text-xs transition disabled:opacity-40 " +
-        (active
-          ? "bg-stone-200 text-stone-900"
-          : "text-stone-600 hover:bg-stone-100 hover:text-stone-900")
-      }
-    >
-      {children}
-    </button>
+    <Tooltip label={primary} hint={hint} side="bottom" disabled={disabled}>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={label}
+        aria-pressed={active}
+        disabled={disabled}
+        className={
+          "flex h-8 min-w-8 items-center justify-center rounded-md px-2 text-xs transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50 " +
+          (active
+            ? "bg-stone-200 text-stone-900"
+            : "text-stone-600 hover:bg-stone-100 hover:text-stone-900")
+        }
+      >
+        {children}
+      </button>
+    </Tooltip>
   );
+}
+
+/** Splits a label like "Bold (Ctrl+B)" into the primary name and the shortcut hint. */
+function splitShortcut(label: string): { primary: string; hint?: string } {
+  const match = label.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  if (!match) return { primary: label };
+  return { primary: match[1], hint: match[2] };
 }
 
 function BubbleButton({ active, onClick, label, children }: ToolButtonProps) {

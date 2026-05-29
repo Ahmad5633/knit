@@ -1,10 +1,17 @@
 "use client";
 
 import { motion, type PanInfo } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useBoard } from "@/lib/store";
 import { findZoneAtPoint } from "@/lib/hit-test";
+import {
+  CLICK_THRESHOLD_PX,
+  distance,
+  readClientPoint,
+  type ViewportPoint,
+} from "@/lib/drag-utils";
 import { ItemIcon } from "./ItemIcon";
+import { Tooltip } from "./Tooltip";
 import type { Item, ZoneId } from "@/lib/types";
 
 interface DraggableItemProps {
@@ -12,19 +19,6 @@ interface DraggableItemProps {
   zoneId: ZoneId;
   size?: number;
   showLabel?: boolean;
-}
-
-const CLICK_THRESHOLD_PX = 4;
-
-function readClientPoint(
-  e: PointerEvent | MouseEvent | TouchEvent,
-): { x: number; y: number } | null {
-  if ("clientX" in e && typeof (e as MouseEvent).clientX === "number") {
-    return { x: (e as MouseEvent).clientX, y: (e as MouseEvent).clientY };
-  }
-  const touch = (e as TouchEvent).changedTouches?.[0];
-  if (touch) return { x: touch.clientX, y: touch.clientY };
-  return null;
 }
 
 export function DraggableItem({
@@ -36,27 +30,23 @@ export function DraggableItem({
   const moveItem = useBoard((s) => s.moveItem);
   const openPreview = useBoard((s) => s.openPreview);
   const openDocumentEditor = useBoard((s) => s.openDocumentEditor);
-  const startPoint = useRef<{ x: number; y: number } | null>(null);
-  const didDragRef = useRef(false);
+
+  // Origin of the current drag and whether it actually moved. Both reset on
+  // every fresh pointer-down so a click after a drag still registers.
+  const startPoint = useRef<ViewportPoint | null>(null);
+  const didDrag = useRef(false);
+  const [dragging, setDragging] = useState(false);
 
   const handlePointerDown = () => {
-    didDragRef.current = false;
-  };
-
-  const handleClick = () => {
-    if (didDragRef.current) {
-      didDragRef.current = false;
-      return;
-    }
-    if (item.kind === "file") openPreview(item.id);
-    else if (item.kind === "document") openDocumentEditor(item.id);
+    didDrag.current = false;
   };
 
   const handleDragStart = (
     _e: PointerEvent | MouseEvent | TouchEvent,
     info: PanInfo,
   ) => {
-    didDragRef.current = true;
+    didDrag.current = true;
+    setDragging(true);
     startPoint.current = { x: info.point.x, y: info.point.y };
   };
 
@@ -66,41 +56,84 @@ export function DraggableItem({
   ) => {
     const start = startPoint.current;
     startPoint.current = null;
-    const dx = start ? info.point.x - start.x : 0;
-    const dy = start ? info.point.y - start.y : 0;
-    const moved = Math.hypot(dx, dy);
+    setDragging(false);
+    const moved = start
+      ? distance(start, { x: info.point.x, y: info.point.y })
+      : 0;
 
+    // Sub-threshold movement — treat as click; onClick handles activation.
     if (moved < CLICK_THRESHOLD_PX) return;
 
-    try {
-      const viewportPoint = readClientPoint(e) ?? {
-        x: info.point.x - window.scrollX,
-        y: info.point.y - window.scrollY,
-      };
-      const target = findZoneAtPoint(viewportPoint, zoneId);
-      if (target) moveItem(item.id, zoneId, target);
-    } catch (err) {
-      console.error("[knit] drag end failed", err);
+    const dropPoint = readClientPoint(e) ?? {
+      x: info.point.x - window.scrollX,
+      y: info.point.y - window.scrollY,
+    };
+    const target = findZoneAtPoint(dropPoint, zoneId);
+    if (target) moveItem(item.id, zoneId, target);
+  };
+
+  const handleClick = () => {
+    if (didDrag.current) {
+      didDrag.current = false;
+      return;
     }
+    if (item.kind === "file") openPreview(item.id);
+    else if (item.kind === "document") openDocumentEditor(item.id);
   };
 
   return (
-    <motion.div
-      drag
-      dragMomentum={false}
-      dragElastic={0.1}
-      dragSnapToOrigin
-      onPointerDown={handlePointerDown}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onClick={handleClick}
-      whileDrag={{ scale: 1.1, zIndex: 100, cursor: "grabbing" }}
-      whileHover={{ scale: 1.04 }}
-      className="cursor-grab touch-none select-none"
-      style={{ touchAction: "none" }}
-      title={item.label}
+    <Tooltip
+      label={tooltipLabel(item)}
+      hint={tooltipHint(item)}
+      side="top"
+      disabled={dragging}
     >
-      <ItemIcon item={item} size={size} showLabel={showLabel} />
-    </motion.div>
+      <motion.div
+        drag
+        dragMomentum={false}
+        dragElastic={0.1}
+        dragSnapToOrigin
+        onPointerDown={handlePointerDown}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onClick={handleClick}
+        whileDrag={{ scale: 1.1, zIndex: 100, cursor: "grabbing" }}
+        whileHover={{ scale: 1.04 }}
+        className="cursor-grab touch-none select-none"
+        style={{ touchAction: "none" }}
+        aria-label={ariaLabel(item)}
+      >
+        <ItemIcon item={item} size={size} showLabel={showLabel} />
+      </motion.div>
+    </Tooltip>
   );
+}
+
+function tooltipLabel(item: Item): string {
+  if (item.kind === "document") return item.title?.trim() || "Untitled document";
+  return item.label || item.kind;
+}
+
+function tooltipHint(item: Item): string | undefined {
+  switch (item.kind) {
+    case "document":
+      return "Click to edit · drag to move";
+    case "file":
+      return "Click to preview · drag to move";
+    case "app":
+      return "App · drag to move";
+    case "user":
+    case "avatar":
+      return "Person · drag to move";
+    case "feather":
+    case "yarn":
+    case "landscape":
+      return "Drag to move";
+  }
+}
+
+function ariaLabel(item: Item): string {
+  const base = tooltipLabel(item);
+  const hint = tooltipHint(item);
+  return hint ? `${base} — ${hint}` : base;
 }

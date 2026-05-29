@@ -3,14 +3,15 @@
 import { AnimatePresence } from "framer-motion";
 import { useBoard } from "@/lib/store";
 import { DraggableItem } from "./DraggableItem";
+import { Tooltip } from "./Tooltip";
 
 export function SetAsideTray() {
   const itemIds = useBoard((s) => s.zones.setAside.itemIds);
   const items = useBoard((s) => s.items);
 
   return (
-    <div className="relative" style={{ width: 320 }}>
-      <div data-zone-id="setAside" className="relative" style={{ width: 320, minHeight: 240 }}>
+    <div className="relative w-full max-w-[320px] lg:w-[320px]">
+      <div data-zone-id="setAside" className="relative w-full min-h-[240px] aspect-[320/240] lg:aspect-auto">
         <svg
           viewBox="0 0 320 240"
           className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
@@ -60,15 +61,21 @@ export function SetAsideTray() {
           </AnimatePresence>
         </div>
         <div className="absolute bottom-4 left-4 z-10">
-          <div className="font-handwritten text-[28px] leading-none text-stone-700">
+          <div className="font-handwritten text-[22px] sm:text-[28px] leading-none text-stone-700">
             set aside
           </div>
-          <button
-            type="button"
-            className="mt-1.5 text-[11px] leading-none text-stone-700"
+          <Tooltip
+            label="Return all items"
+            hint="Sends everything back to its origin"
+            side="top"
           >
-            Return all back
-          </button>
+            <button
+              type="button"
+              className="-mx-1 mt-1 inline-flex min-h-[28px] items-center rounded-md px-1 text-[11px] leading-none text-stone-700 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60"
+            >
+              Return all back
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>

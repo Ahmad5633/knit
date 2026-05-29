@@ -11,7 +11,7 @@ export function UserChip() {
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="font-handwritten text-[26px] leading-none text-stone-700">
+      <span className="font-handwritten text-[20px] leading-none text-stone-700 sm:text-[26px]">
         Knit
       </span>
       <ItemIcon item={user} size={44} />

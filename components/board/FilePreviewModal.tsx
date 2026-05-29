@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useBoard } from "@/lib/store";
 import { formatBytes, isImageMime, isPdfMime } from "@/lib/file-drop";
+import { Tooltip } from "./Tooltip";
 
 export function FilePreviewModal() {
   const previewItemId = useBoard((s) => s.previewItemId);
@@ -53,24 +54,28 @@ export function FilePreviewModal() {
               </div>
               <div className="flex items-center gap-2">
                 {item.objectUrl && (
-                  <a
-                    href={item.objectUrl}
-                    download={item.label}
-                    className="rounded-md border border-stone-300 px-3 py-1 text-xs font-medium text-stone-700 transition hover:bg-stone-100"
-                  >
-                    Download
-                  </a>
+                  <Tooltip label="Download" hint={item.label} side="bottom">
+                    <a
+                      href={item.objectUrl}
+                      download={item.label}
+                      className="rounded-md border border-stone-300 px-3 py-1 text-xs font-medium text-stone-700 transition hover:bg-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50"
+                    >
+                      Download
+                    </a>
+                  </Tooltip>
                 )}
-                <button
-                  type="button"
-                  onClick={close}
-                  aria-label="Close preview"
-                  className="flex h-8 w-8 items-center justify-center rounded-md text-stone-500 transition hover:bg-stone-100 hover:text-stone-800"
-                >
-                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
-                  </svg>
-                </button>
+                <Tooltip label="Close" hint="Esc" side="bottom">
+                  <button
+                    type="button"
+                    onClick={close}
+                    aria-label="Close preview"
+                    className="flex h-8 w-8 items-center justify-center rounded-md text-stone-500 transition hover:bg-stone-100 hover:text-stone-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </Tooltip>
               </div>
             </header>
             <div className="flex-1 overflow-auto bg-stone-50">

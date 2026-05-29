@@ -38,5 +38,3 @@ export interface Zone {
   accepts: ItemKind[];
   itemIds: string[];
 }
-
-export type ZoneRects = Partial<Record<ZoneId, DOMRect>>;

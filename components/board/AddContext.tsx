@@ -15,7 +15,7 @@ export function AddContext() {
 
   return (
     <div ref={dropRef} className="flex flex-col items-end gap-3">
-      <div className="font-handwritten text-[28px] italic text-stone-500/85">
+      <div className="font-handwritten text-[22px] italic text-stone-500/85 sm:text-[28px]">
         add context...
       </div>
       <div
