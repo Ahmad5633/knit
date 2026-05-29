@@ -91,7 +91,7 @@ export function DraggableItem({
       <motion.div
         drag
         dragMomentum={false}
-        dragElastic={0.1}
+        dragElastic={0}
         dragSnapToOrigin
         onPointerDown={handlePointerDown}
         onDragStart={handleDragStart}
@@ -99,6 +99,11 @@ export function DraggableItem({
         onClick={handleClick}
         whileDrag={{ scale: 1.1, zIndex: 100, cursor: "grabbing" }}
         whileHover={{ scale: 1.04 }}
+        transition={{
+          type: "spring",
+          stiffness: 350,
+          damping: 30,
+        }}
         className="cursor-grab touch-none select-none"
         style={{ touchAction: "none" }}
         aria-label={ariaLabel(item)}

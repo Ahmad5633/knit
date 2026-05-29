@@ -53,9 +53,8 @@ export function Tooltip({
     null,
   );
 
-  if (disabled) return children;
-
   const show = () => {
+    if (disabled) return;
     if (pending) clearTimeout(pending);
     const t = setTimeout(() => setOpen(true), delay);
     setPending(t);
@@ -69,6 +68,8 @@ export function Tooltip({
     setOpen(false);
   };
 
+  const visible = open && !disabled;
+
   return (
     <span
       className={cn("relative inline-flex", className)}
@@ -78,17 +79,17 @@ export function Tooltip({
       onFocusCapture={show}
       onBlurCapture={hide}
     >
-      <span aria-describedby={open ? id : undefined} className="contents">
+      <span aria-describedby={visible ? id : undefined} className="contents">
         {children}
       </span>
       <span
         id={id}
         role="tooltip"
-        aria-hidden={!open}
+        aria-hidden={!visible}
         className={cn(
           "pointer-events-none absolute z-[300] whitespace-nowrap rounded-md bg-stone-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-lg ring-1 ring-stone-900/10 transition-all duration-150",
           SIDE_POSITION[side],
-          open
+          visible
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-[2px] scale-95",
         )}
