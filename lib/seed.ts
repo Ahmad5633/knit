@@ -84,7 +84,7 @@ export const seedItems: Record<string, Item> = Object.fromEntries(
 export const seedZones: Record<ZoneId, Zone> = {
   setAside: {
     id: "setAside",
-    accepts: ["feather", "yarn", "landscape"],
+    accepts: ["feather", "yarn", "landscape", "avatar", "app", "file"],
     itemIds: setAsideItems.map((i) => i.id),
   },
   leftRailA: {

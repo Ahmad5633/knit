@@ -5,11 +5,16 @@ export interface Point {
   y: number;
 }
 
+// When the drop point falls inside multiple zone rects (e.g. the tray
+// overlaps slightly with the canvas), prefer the smallest matching zone —
+// it's the more specific target.
 export function findZoneAtPoint(
   point: Point,
   rects: ZoneRects,
   exclude?: ZoneId,
 ): ZoneId | null {
+  let bestId: ZoneId | null = null;
+  let bestArea = Infinity;
   for (const [zoneId, rect] of Object.entries(rects) as [ZoneId, DOMRect][]) {
     if (!rect || zoneId === exclude) continue;
     if (
@@ -18,8 +23,12 @@ export function findZoneAtPoint(
       point.y >= rect.top &&
       point.y <= rect.bottom
     ) {
-      return zoneId;
+      const area = rect.width * rect.height;
+      if (area < bestArea) {
+        bestArea = area;
+        bestId = zoneId;
+      }
     }
   }
-  return null;
+  return bestId;
 }

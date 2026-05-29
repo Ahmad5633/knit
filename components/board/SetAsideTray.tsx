@@ -28,8 +28,8 @@ export function SetAsideTray() {
   }, [registerRect]);
 
   return (
-    <div className="relative w-[320px]">
-      <div className="relative min-h-[240px] w-[320px]">
+    <div className="relative w-full max-w-[320px]">
+      <div ref={ref} className="relative min-h-[180px] w-full sm:min-h-[240px]">
         <svg
           viewBox="0 0 320 240"
           className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
@@ -63,8 +63,7 @@ export function SetAsideTray() {
           />
         </svg>
         <div
-          ref={ref}
-          className="relative z-10 grid grid-cols-3 gap-x-3 gap-y-2 px-6 pt-5"
+          className="relative z-10 grid grid-cols-3 gap-x-2 gap-y-2 px-4 pt-4 sm:gap-x-3 sm:px-6 sm:pt-5"
         >
           <AnimatePresence initial={false}>
             {itemIds.map((id) => {
@@ -81,13 +80,13 @@ export function SetAsideTray() {
             })}
           </AnimatePresence>
         </div>
-        <div className="absolute bottom-4 left-4 z-10">
-          <div className="font-handwritten text-[28px] leading-none text-stone-700">
+        <div className="absolute bottom-3 left-3 z-10 sm:bottom-4 sm:left-4">
+          <div className="font-handwritten text-[22px] leading-none text-stone-700 sm:text-[28px]">
             set aside
           </div>
           <button
             type="button"
-            className="mt-1.5 text-[11px] text-rose-300 underline underline-offset-[3px] decoration-rose-300/60 transition hover:text-rose-400"
+            className="mt-1.5 text-[10px] leading-none text-stone-700 sm:text-[11px]"
           >
             Return all back
           </button>
