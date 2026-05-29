@@ -28,8 +28,8 @@ export function SetAsideTray() {
   }, [registerRect]);
 
   return (
-    <div className="relative w-full max-w-[320px]">
-      <div ref={ref} className="relative min-h-[180px] w-full sm:min-h-[240px]">
+    <div className="relative" style={{ width: 320 }}>
+      <div ref={ref} className="relative" style={{ width: 320, minHeight: 240 }}>
         <svg
           viewBox="0 0 320 240"
           className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
@@ -62,9 +62,7 @@ export function SetAsideTray() {
             strokeLinejoin="round"
           />
         </svg>
-        <div
-          className="relative z-10 grid grid-cols-3 gap-x-2 gap-y-2 px-4 pt-4 sm:gap-x-3 sm:px-6 sm:pt-5"
-        >
+        <div className="relative z-10 grid grid-cols-3 gap-x-3 gap-y-2 px-6 pt-5">
           <AnimatePresence initial={false}>
             {itemIds.map((id) => {
               const item = items[id];
@@ -80,13 +78,13 @@ export function SetAsideTray() {
             })}
           </AnimatePresence>
         </div>
-        <div className="absolute bottom-3 left-3 z-10 sm:bottom-4 sm:left-4">
-          <div className="font-handwritten text-[22px] leading-none text-stone-700 sm:text-[28px]">
+        <div className="absolute bottom-4 left-4 z-10">
+          <div className="font-handwritten text-[28px] leading-none text-stone-700">
             set aside
           </div>
           <button
             type="button"
-            className="mt-1.5 text-[10px] leading-none text-stone-700 sm:text-[11px]"
+            className="mt-1.5 text-[11px] leading-none text-stone-700"
           >
             Return all back
           </button>
